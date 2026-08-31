@@ -194,32 +194,46 @@
 
   </div>
 
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const error = document.getElementById("errorMessage");
+<script>
+    const SUPABASE_URL = "https://lvygpsvtzjywcyjnyumux.supabase.co";
 
-      /*
-        Temporary login for development.
-        इसे बाद में secure authentication से replace करेंगे.
-      */
+    const SUPABASE_KEY = "sb_publishable_-Un7Fq_webV_CPFj6E_TZgL1X9yR7Lo";
 
-      if (username === "admin" && password === "IRCE@2026") {
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-        sessionStorage.setItem("irceAdminLoggedIn", "true");
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+
+        e.preventDefault();
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
+
+        const error = document.getElementById("errorMessage");
+
+        error.style.display = "none";
+
+        const { data, error: loginError } =
+            await supabaseClient.auth.signInWithPassword({
+                email: username,
+                password: password
+            });
+
+        if (loginError) {
+
+            error.textContent = "Username या Password गलत है।";
+            error.style.display = "block";
+
+            return;
+        }
 
         window.location.href = "admin-dashboard.html";
-
-      } else {
-
-        error.style.display = "block";
-
-      }
     });
-  </script>
+</script>
 
 </body>
 </html>
