@@ -1,5 +1,16 @@
 // =====================================================
 // IRCE COACHING — Main JavaScript
+// ================= SUPABASE =================
+const SUPABASE_URL = "https://lvygpsvtzjywcyjynymux.supabase.co";
+
+// अपनी Publishable Key यहाँ paste करो
+const SUPABASE_KEY = "sb_publishable_-Un7Fq_wevB_CPEj6E_TZg_lX9yRE7Lो";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+// =============================================
 // =====================================================
 
 document.addEventListener("DOMContentLoaded", () => {
