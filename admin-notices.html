@@ -1,1 +1,729 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>IRCE Coaching — Notices</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f2e8;
+      color: #173f3d;
+    }
+
+    .header {
+      min-height: 75px;
+      background: #075f5b;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 35px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+    }
+
+    .logo-box {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #f7a415;
+      color: #075f5b;
+      font-weight: 900;
+    }
+
+    .back {
+      color: white;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,.35);
+      padding: 9px 15px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    .container {
+      width: min(94%, 1100px);
+      margin: auto;
+      padding: 40px 0 70px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .top h1 {
+      font-size: 32px;
+      margin-bottom: 5px;
+    }
+
+    .top p {
+      color: #68807d;
+      font-size: 14px;
+    }
+
+    .add-btn {
+      border: none;
+      background: #f7a415;
+      color: #173f3d;
+      padding: 13px 20px;
+      border-radius: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .form-card {
+      display: none;
+      background: white;
+      border: 1px solid #e5ddd1;
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 25px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.06);
+    }
+
+    .form-card.active {
+      display: block;
+    }
+
+    .form-card h2 {
+      color: #075f5b;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #d8d1c7;
+      border-radius: 10px;
+      padding: 12px 13px;
+      font: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #075f5b;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .save-btn,
+    .cancel-btn {
+      border: none;
+      padding: 11px 18px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .save-btn {
+      background: #075f5b;
+      color: white;
+    }
+
+    .cancel-btn {
+      background: #eee5d6;
+      color: #173f3d;
+    }
+
+    .notice-list {
+      display: grid;
+      gap: 15px;
+    }
+
+    .notice {
+      background: white;
+      border: 1px solid #e5ddd1;
+      border-radius: 18px;
+      padding: 23px;
+      box-shadow: 0 7px 22px rgba(0,0,0,.04);
+    }
+
+    .notice-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .notice h3 {
+      color: #075f5b;
+      margin-bottom: 7px;
+      font-size: 19px;
+    }
+
+    .notice p {
+      color: #68807d;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .date {
+      color: #f47a45;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 17px;
+    }
+
+    .edit,
+    .delete {
+      border: none;
+      padding: 8px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .edit {
+      background: #e8f1ef;
+      color: #075f5b;
+    }
+
+    .delete {
+      background: #fff0ed;
+      color: #c7472f;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 55px 20px;
+      color: #68807d;
+      background: white;
+      border-radius: 18px;
+      border: 1px dashed #d8d1c7;
+    }
+
+    @media (max-width: 600px) {
+
+      .header {
+        padding: 0 18px;
+      }
+
+      .container {
+        width: 91%;
+        padding-top: 28px;
+      }
+
+      .top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .top h1 {
+        font-size: 27px;
+      }
+
+      .add-btn {
+        width: 100%;
+      }
+
+      .notice-top {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .date {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+
+    <div class="logo">
+      <div class="logo-box">IR</div>
+      <span>IRCE COACHING — ADMIN</span>
+    </div>
+
+    <a href="admin-dashboard.html" class="back">
+      ← Dashboard
+    </a>
+
+  </header>
+
+
+  <main class="container">
+
+    <div class="top">
+
+      <div>
+        <h1>Notices</h1>
+        <p>Website के notices यहाँ manage करें।</p>
+      </div>
+
+      <button class="add-btn" id="addNoticeBtn">
+        + नया Notice
+      </button>
+
+    </div>
+
+
+    <div class="form-card" id="noticeForm">
+
+      <h2 id="formTitle">
+        नया Notice जोड़ें
+      </h2>
+
+      <div class="field">
+
+        <label for="noticeTitle">
+          Notice Title
+        </label>
+
+        <input
+          type="text"
+          id="noticeTitle"
+          placeholder="जैसे: Admission Open"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="noticeDate">
+          Date
+        </label>
+
+        <input
+          type="date"
+          id="noticeDate"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="noticeType">
+          Notice Type
+        </label>
+
+        <select id="noticeType">
+
+          <option value="General">
+            General
+          </option>
+
+          <option value="Important">
+            Important
+          </option>
+
+          <option value="Admission">
+            Admission
+          </option>
+
+          <option value="Exam">
+            Exam
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="noticeDescription">
+          Description
+        </label>
+
+        <textarea
+          id="noticeDescription"
+          placeholder="Notice की पूरी जानकारी लिखें..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button class="save-btn" id="saveNotice">
+          Save Notice
+        </button>
+
+        <button class="cancel-btn" id="cancelNotice">
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="notice-list" id="noticeList">
+
+      <div class="empty">
+        अभी कोई notice नहीं है।
+        <br>
+        ऊपर “+ नया Notice” से पहला notice जोड़ें।
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    const addButton =
+      document.getElementById("addNoticeBtn");
+
+    const form =
+      document.getElementById("noticeForm");
+
+    const saveButton =
+      document.getElementById("saveNotice");
+
+    const cancelButton =
+      document.getElementById("cancelNotice");
+
+    const list =
+      document.getElementById("noticeList");
+
+    const titleInput =
+      document.getElementById("noticeTitle");
+
+    const dateInput =
+      document.getElementById("noticeDate");
+
+    const typeInput =
+      document.getElementById("noticeType");
+
+    const descriptionInput =
+      document.getElementById("noticeDescription");
+
+    const formTitle =
+      document.getElementById("formTitle");
+
+
+    let editingId = null;
+
+
+    function getNotices() {
+
+      return JSON.parse(
+        localStorage.getItem("irceNotices") || "[]"
+      );
+
+    }
+
+
+    function saveNotices(notices) {
+
+      localStorage.setItem(
+        "irceNotices",
+        JSON.stringify(notices)
+      );
+
+    }
+
+
+    function renderNotices() {
+
+      const notices = getNotices();
+
+      list.innerHTML = "";
+
+      if (notices.length === 0) {
+
+        list.innerHTML = `
+          <div class="empty">
+            अभी कोई notice नहीं है।
+            <br>
+            ऊपर “+ नया Notice” से पहला notice जोड़ें।
+          </div>
+        `;
+
+        return;
+      }
+
+
+      notices.forEach(notice => {
+
+        const item =
+          document.createElement("div");
+
+        item.className = "notice";
+
+        item.innerHTML = `
+
+          <div class="notice-top">
+
+            <div>
+
+              <h3>
+                ${escapeHtml(notice.title)}
+              </h3>
+
+              <p>
+                ${escapeHtml(notice.description)}
+              </p>
+
+            </div>
+
+            <div class="date">
+              ${escapeHtml(notice.date)}
+              <br>
+              ${escapeHtml(notice.type)}
+            </div>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="edit"
+              onclick="editNotice('${notice.id}')"
+            >
+              ✏ Edit
+            </button>
+
+            <button
+              class="delete"
+              onclick="deleteNotice('${notice.id}')"
+            >
+              🗑 Delete
+            </button>
+
+          </div>
+
+        `;
+
+        list.appendChild(item);
+
+      });
+
+    }
+
+
+    function escapeHtml(value) {
+
+      const div =
+        document.createElement("div");
+
+      div.textContent = value || "";
+
+      return div.innerHTML;
+
+    }
+
+
+    addButton.addEventListener("click", () => {
+
+      editingId = null;
+
+      formTitle.textContent =
+        "नया Notice जोड़ें";
+
+      titleInput.value = "";
+      dateInput.value = "";
+      typeInput.value = "General";
+      descriptionInput.value = "";
+
+      form.classList.add("active");
+
+      titleInput.focus();
+
+    });
+
+
+    cancelButton.addEventListener("click", () => {
+
+      form.classList.remove("active");
+
+      editingId = null;
+
+    });
+
+
+    saveButton.addEventListener("click", () => {
+
+      const title =
+        titleInput.value.trim();
+
+      const date =
+        dateInput.value;
+
+      const type =
+        typeInput.value;
+
+      const description =
+        descriptionInput.value.trim();
+
+
+      if (!title || !date || !description) {
+
+        alert(
+          "कृपया Title, Date और Description भरें।"
+        );
+
+        return;
+
+      }
+
+
+      const notices = getNotices();
+
+
+      if (editingId) {
+
+        const index =
+          notices.findIndex(
+            notice => notice.id === editingId
+          );
+
+        if (index !== -1) {
+
+          notices[index] = {
+            ...notices[index],
+            title,
+            date,
+            type,
+            description
+          };
+
+        }
+
+      } else {
+
+        notices.unshift({
+
+          id:
+            Date.now().toString(),
+
+          title,
+          date,
+          type,
+          description
+
+        });
+
+      }
+
+
+      saveNotices(notices);
+
+      form.classList.remove("active");
+
+      editingId = null;
+
+      renderNotices();
+
+    });
+
+
+    window.editNotice = function(id) {
+
+      const notices = getNotices();
+
+      const notice =
+        notices.find(
+          item => item.id === id
+        );
+
+      if (!notice) return;
+
+
+      editingId = id;
+
+      formTitle.textContent =
+        "Notice Edit करें";
+
+      titleInput.value =
+        notice.title;
+
+      dateInput.value =
+        notice.date;
+
+      typeInput.value =
+        notice.type;
+
+      descriptionInput.value =
+        notice.description;
+
+      form.classList.add("active");
+
+      titleInput.focus();
+
+    };
+
+
+    window.deleteNotice = function(id) {
+
+      const confirmed =
+        confirm(
+          "क्या आप यह notice delete करना चाहते हैं?"
+        );
+
+      if (!confirmed) return;
+
+
+      const notices =
+        getNotices().filter(
+          notice => notice.id !== id
+        );
+
+      saveNotices(notices);
+
+      renderNotices();
+
+    };
+
+
+    renderNotices();
+
+  </script>
+
+</body>
+</html>
