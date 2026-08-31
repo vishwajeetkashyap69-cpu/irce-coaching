@@ -1,1 +1,278 @@
 
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>IRCE Admin Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f2e8;
+      color: #173f3d;
+    }
+
+    .header {
+      height: 75px;
+      background: #075f5b;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 35px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: bold;
+    }
+
+    .logo-box {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      background: #f7a415;
+      color: #075f5b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .logout {
+      border: 1px solid rgba(255,255,255,.4);
+      background: transparent;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 45px 25px;
+    }
+
+    .welcome {
+      margin-bottom: 35px;
+    }
+
+    .welcome h1 {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #68807d;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e5ddd1;
+      border-radius: 20px;
+      padding: 28px;
+      min-height: 180px;
+      box-shadow: 0 8px 25px rgba(0,0,0,.05);
+      transition: .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0,0,0,.08);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      background: #f7a415;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #68807d;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .card button {
+      margin-top: 18px;
+      padding: 9px 15px;
+      border: none;
+      border-radius: 9px;
+      background: #075f5b;
+      color: white;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px;
+      color: #68807d;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .header {
+        padding: 0 18px;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="header">
+
+  <div class="logo">
+    <div class="logo-box">IR</div>
+    <div>
+      IRCE COACHING
+    </div>
+  </div>
+
+  <button class="logout" onclick="logout()">
+    Logout
+  </button>
+
+</header>
+
+
+<main class="container">
+
+  <div class="welcome">
+    <h1>Admin Dashboard 👋</h1>
+    <p>
+      यहाँ से आप IRCE Coaching की वेबसाइट को manage कर सकेंगे।
+    </p>
+  </div>
+
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="icon">📢</div>
+      <h2>Notices</h2>
+      <p>
+        वेबसाइट पर आने वाली सूचनाएँ और announcements manage करें।
+      </p>
+      <button>Manage Notices</button>
+    </div>
+
+
+    <div class="card">
+      <div class="icon">📚</div>
+      <h2>Courses & Exams</h2>
+      <p>
+        JNV, VidyaGyan, CHS, NMMS और अन्य परीक्षाओं की जानकारी manage करें।
+      </p>
+      <button>Manage Courses</button>
+    </div>
+
+
+    <div class="card">
+      <div class="icon">🏆</div>
+      <h2>Results</h2>
+      <p>
+        विद्यार्थियों के results और achievements update करें।
+      </p>
+      <button>Manage Results</button>
+    </div>
+
+
+    <div class="card">
+      <div class="icon">📝</div>
+      <h2>Admissions</h2>
+      <p>
+        Admission information और registration details manage करें।
+      </p>
+      <button>Manage Admissions</button>
+    </div>
+
+
+    <div class="card">
+      <div class="icon">👨‍🎓</div>
+      <h2>Students</h2>
+      <p>
+        विद्यार्थियों की जानकारी और student records manage करें।
+      </p>
+      <button>Manage Students</button>
+    </div>
+
+
+    <div class="card">
+      <div class="icon">⚙️</div>
+      <h2>Website Settings</h2>
+      <p>
+        Contact details, homepage information और अन्य settings बदलें।
+      </p>
+      <button>Settings</button>
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer class="footer">
+  © 2026 IRCE Coaching — Admin Panel
+</footer>
+
+
+<script>
+
+  // Login check
+  if (sessionStorage.getItem("irceAdminLoggedIn") !== "true") {
+    window.location.href = "admin.html";
+  }
+
+
+  function logout() {
+    sessionStorage.removeItem("irceAdminLoggedIn");
+    window.location.href = "admin.html";
+  }
+
+</script>
+
+</body>
+</html>
