@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -21,7 +20,7 @@
     }
 
     .header {
-      height: 75px;
+      min-height: 75px;
       background: #075f5b;
       color: white;
       display: flex;
@@ -34,7 +33,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      font-weight: bold;
+      font-weight: 800;
     }
 
     .logo-box {
@@ -43,10 +42,9 @@
       border-radius: 12px;
       background: #f7a415;
       color: #075f5b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
     }
 
     .logout {
@@ -59,9 +57,9 @@
     }
 
     .container {
-      max-width: 1200px;
+      width: min(94%, 1200px);
       margin: auto;
-      padding: 45px 25px;
+      padding: 45px 0 70px;
     }
 
     .welcome {
@@ -88,13 +86,13 @@
       border: 1px solid #e5ddd1;
       border-radius: 20px;
       padding: 28px;
-      min-height: 180px;
+      min-height: 190px;
       box-shadow: 0 8px 25px rgba(0,0,0,.05);
       transition: .2s;
     }
 
     .card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-4px);
       box-shadow: 0 15px 35px rgba(0,0,0,.08);
     }
 
@@ -103,9 +101,8 @@
       height: 48px;
       border-radius: 13px;
       background: #f7a415;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       font-size: 22px;
       margin-bottom: 18px;
     }
@@ -121,14 +118,31 @@
       line-height: 1.6;
     }
 
-    .card button {
+    .manage-btn {
+      display: inline-block;
       margin-top: 18px;
       padding: 9px 15px;
-      border: none;
       border-radius: 9px;
       background: #075f5b;
       color: white;
-      cursor: pointer;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .manage-btn:hover {
+      background: #034b48;
+    }
+
+    .disabled-btn {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 9px 15px;
+      border-radius: 9px;
+      background: #e8e2d9;
+      color: #7b8582;
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .footer {
@@ -156,125 +170,216 @@
       .welcome h1 {
         font-size: 27px;
       }
+
+      .container {
+        width: 91%;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<header class="header">
+  <header class="header">
 
-  <div class="logo">
-    <div class="logo-box">IR</div>
-    <div>
-      IRCE COACHING
+    <div class="logo">
+      <div class="logo-box">IR</div>
+      <div>IRCE COACHING — ADMIN</div>
     </div>
-  </div>
 
-  <button class="logout" onclick="logout()">
-    Logout
-  </button>
+    <button class="logout" onclick="logout()">
+      Logout
+    </button>
 
-</header>
-
-
-<main class="container">
-
-  <div class="welcome">
-    <h1>Admin Dashboard 👋</h1>
-    <p>
-      यहाँ से आप IRCE Coaching की वेबसाइट को manage कर सकेंगे।
-    </p>
-  </div>
+  </header>
 
 
-  <div class="grid">
+  <main class="container">
 
-    <div class="card">
-      <div class="icon">📢</div>
-      <h2>Notices</h2>
+    <div class="welcome">
+
+      <h1>
+        Admin Dashboard 👋
+      </h1>
+
       <p>
-        वेबसाइट पर आने वाली सूचनाएँ और announcements manage करें।
+        यहाँ से आप IRCE Coaching की वेबसाइट को manage कर सकेंगे।
       </p>
-     <a href="admin-notices.html" class="manage-btn">
-  Manage Notices
-</a>
+
     </div>
 
 
-    <div class="card">
-      <div class="icon">📚</div>
-      <h2>Courses & Exams</h2>
-      <p>
-        JNV, VidyaGyan, CHS, NMMS और अन्य परीक्षाओं की जानकारी manage करें।
-      </p>
-      <button>Manage Courses</button>
+    <div class="grid">
+
+
+      <!-- NOTICES -->
+
+      <div class="card">
+
+        <div class="icon">📢</div>
+
+        <h2>
+          Notices
+        </h2>
+
+        <p>
+          वेबसाइट पर आने वाली सूचनाएँ और announcements manage करें।
+        </p>
+
+        <a
+          href="admin-notices.html"
+          class="manage-btn"
+        >
+          Manage Notices →
+        </a>
+
+      </div>
+
+
+      <!-- COURSES -->
+
+      <div class="card">
+
+        <div class="icon">📚</div>
+
+        <h2>
+          Courses & Exams
+        </h2>
+
+        <p>
+          JNV, VidyaGyan, CHS, NMMS और अन्य परीक्षाओं की जानकारी manage करें।
+        </p>
+
+        <span class="disabled-btn">
+          जल्द उपलब्ध होगा
+        </span>
+
+      </div>
+
+
+      <!-- RESULTS -->
+
+      <div class="card">
+
+        <div class="icon">🏆</div>
+
+        <h2>
+          Results
+        </h2>
+
+        <p>
+          विद्यार्थियों के results और achievements update करें।
+        </p>
+
+        <span class="disabled-btn">
+          जल्द उपलब्ध होगा
+        </span>
+
+      </div>
+
+
+      <!-- ADMISSIONS -->
+
+      <div class="card">
+
+        <div class="icon">📝</div>
+
+        <h2>
+          Admissions
+        </h2>
+
+        <p>
+          Admission information और registration details manage करें।
+        </p>
+
+        <span class="disabled-btn">
+          जल्द उपलब्ध होगा
+        </span>
+
+      </div>
+
+
+      <!-- STUDENTS -->
+
+      <div class="card">
+
+        <div class="icon">👨‍🎓</div>
+
+        <h2>
+          Students
+        </h2>
+
+        <p>
+          विद्यार्थियों की जानकारी और student records manage करें।
+        </p>
+
+        <span class="disabled-btn">
+          जल्द उपलब्ध होगा
+        </span>
+
+      </div>
+
+
+      <!-- SETTINGS -->
+
+      <div class="card">
+
+        <div class="icon">⚙️</div>
+
+        <h2>
+          Website Settings
+        </h2>
+
+        <p>
+          Contact details, homepage information और अन्य settings बदलें।
+        </p>
+
+        <span class="disabled-btn">
+          जल्द उपलब्ध होगा
+        </span>
+
+      </div>
+
+
     </div>
 
-
-    <div class="card">
-      <div class="icon">🏆</div>
-      <h2>Results</h2>
-      <p>
-        विद्यार्थियों के results और achievements update करें।
-      </p>
-      <button>Manage Results</button>
-    </div>
+  </main>
 
 
-    <div class="card">
-      <div class="icon">📝</div>
-      <h2>Admissions</h2>
-      <p>
-        Admission information और registration details manage करें।
-      </p>
-      <button>Manage Admissions</button>
-    </div>
+  <footer class="footer">
+    © 2026 IRCE Coaching — Admin Panel
+  </footer>
 
 
-    <div class="card">
-      <div class="icon">👨‍🎓</div>
-      <h2>Students</h2>
-      <p>
-        विद्यार्थियों की जानकारी और student records manage करें।
-      </p>
-      <button>Manage Students</button>
-    </div>
+  <script>
+
+    /*
+      Temporary development authentication.
+      Production authentication बाद में secure backend
+      और database के साथ implement किया जाएगा.
+    */
+
+    if (
+      sessionStorage.getItem("irceAdminLoggedIn") !== "true"
+    ) {
+
+      window.location.href = "admin.html";
+
+    }
 
 
-    <div class="card">
-      <div class="icon">⚙️</div>
-      <h2>Website Settings</h2>
-      <p>
-        Contact details, homepage information और अन्य settings बदलें।
-      </p>
-      <button>Settings</button>
-    </div>
+    function logout() {
 
-  </div>
+      sessionStorage.removeItem(
+        "irceAdminLoggedIn"
+      );
 
-</main>
+      window.location.href =
+        "admin.html";
 
+    }
 
-<footer class="footer">
-  © 2026 IRCE Coaching — Admin Panel
-</footer>
-
-
-<script>
-
-  // Login check
-  if (sessionStorage.getItem("irceAdminLoggedIn") !== "true") {
-    window.location.href = "admin.html";
-  }
-
-
-  function logout() {
-    sessionStorage.removeItem("irceAdminLoggedIn");
-    window.location.href = "admin.html";
-  }
-
-</script>
+  </script>
 
 </body>
 </html>
