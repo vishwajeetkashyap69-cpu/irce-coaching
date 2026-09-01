@@ -115,6 +115,14 @@
       transform: none;
     }
 
+    .loading {
+      display: none;
+      margin-top: 12px;
+      text-align: center;
+      color: #68807d;
+      font-size: 13px;
+    }
+
     .error {
       display: none;
       margin-top: 15px;
@@ -136,6 +144,7 @@
       color: #075f5b;
       font-size: 14px;
       text-align: center;
+      line-height: 1.5;
     }
 
     .back {
@@ -156,14 +165,6 @@
       margin-top: 25px;
       font-size: 12px;
       color: #68807d;
-    }
-
-    .loading {
-      display: none;
-      margin-top: 10px;
-      text-align: center;
-      color: #68807d;
-      font-size: 13px;
     }
 
     @media (max-width: 480px) {
@@ -188,26 +189,25 @@
         IR
       </div>
 
-      <h1>
-        Admin Login
-      </h1>
+      <h1>Admin Login</h1>
 
       <p class="subtitle">
         IRCE Coaching Administration Panel
       </p>
 
-
       <form id="loginForm">
 
+        <!-- ADMIN EMAIL -->
         <div class="field">
 
-          <label for="username">
+          <label for="email">
             Admin Email
           </label>
 
           <input
             type="email"
-            id="username"
+            id="email"
+            name="email"
             placeholder="अपना Admin Email डालें"
             autocomplete="username"
             required
@@ -216,6 +216,7 @@
         </div>
 
 
+        <!-- PASSWORD -->
         <div class="field">
 
           <label for="password">
@@ -225,6 +226,7 @@
           <input
             type="password"
             id="password"
+            name="password"
             placeholder="अपना Password डालें"
             autocomplete="current-password"
             required
@@ -233,6 +235,7 @@
         </div>
 
 
+        <!-- LOGIN BUTTON -->
         <button
           type="submit"
           id="loginButton"
@@ -241,6 +244,7 @@
         </button>
 
 
+        <!-- LOADING -->
         <div
           class="loading"
           id="loadingMessage"
@@ -249,6 +253,7 @@
         </div>
 
 
+        <!-- ERROR -->
         <div
           class="error"
           id="errorMessage"
@@ -257,6 +262,7 @@
         </div>
 
 
+        <!-- SUCCESS -->
         <div
           class="success"
           id="successMessage"
@@ -267,6 +273,7 @@
       </form>
 
 
+      <!-- BACK TO WEBSITE -->
       <a
         href="index.html"
         class="back"
@@ -284,39 +291,41 @@
   </div>
 
 
-  <!-- Supabase Library -->
+  <!-- =====================================================
+       SUPABASE LIBRARY
+       ===================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
   <script>
 
-    /*
-      =====================================================
-      SUPABASE CONFIGURATION
-      =====================================================
-    */
+    /* =====================================================
+       SUPABASE CONFIGURATION
+       ===================================================== */
 
     const SUPABASE_URL =
       "https://lvygpsvtzjywcyjnyumx.supabase.co";
 
 
     /*
-      अपनी Supabase Publishable Key यहाँ डालें।
+       अभी Publishable Key नहीं डालनी है।
 
-      उदाहरण:
-      const SUPABASE_KEY = "sb_publishable_xxxxxxxxx";
+       बाद में यहाँ अपनी Supabase Publishable Key डालना:
 
-      Secret key / service_role key यहाँ बिल्कुल न डालें।
+       const SUPABASE_KEY = "sb_publishable_xxxxxxxxx";
+
+       IMPORTANT:
+       यहाँ Secret Key या service_role key बिल्कुल नहीं डालनी।
     */
 
     const SUPABASE_KEY =
-      "sb_publishable_-Un7Fq_wevB_CPEj6E_TZg_lX9yRE7L";
+      "YOUR_PUBLISHABLE_KEY_HERE";
 
 
-    /*
-      Supabase Client
-    */
+    /* =====================================================
+       CREATE SUPABASE CLIENT
+       ===================================================== */
 
     const supabaseClient =
       window.supabase.createClient(
@@ -325,17 +334,15 @@
       );
 
 
-    /*
-      =====================================================
-      LOGIN
-      =====================================================
-    */
+    /* =====================================================
+       GET HTML ELEMENTS
+       ===================================================== */
 
     const loginForm =
       document.getElementById("loginForm");
 
-    const usernameInput =
-      document.getElementById("username");
+    const emailInput =
+      document.getElementById("email");
 
     const passwordInput =
       document.getElementById("password");
@@ -343,15 +350,19 @@
     const loginButton =
       document.getElementById("loginButton");
 
+    const loadingMessage =
+      document.getElementById("loadingMessage");
+
     const errorMessage =
       document.getElementById("errorMessage");
 
     const successMessage =
       document.getElementById("successMessage");
 
-    const loadingMessage =
-      document.getElementById("loadingMessage");
 
+    /* =====================================================
+       LOGIN FUNCTION
+       ===================================================== */
 
     loginForm.addEventListener(
       "submit",
@@ -360,29 +371,23 @@
         event.preventDefault();
 
 
-        /*
-          Hide previous messages
-        */
+        /* Hide old messages */
 
         errorMessage.style.display = "none";
 
         successMessage.style.display = "none";
 
 
-        /*
-          Get user input
-        */
+        /* Get email and password */
 
         const email =
-          usernameInput.value.trim();
+          emailInput.value.trim();
 
         const password =
           passwordInput.value;
 
 
-        /*
-          Basic validation
-        */
+        /* Check empty fields */
 
         if (!email || !password) {
 
@@ -396,9 +401,7 @@
         }
 
 
-        /*
-          Loading state
-        */
+        /* Start loading */
 
         loginButton.disabled = true;
 
@@ -406,91 +409,111 @@
           "block";
 
 
-        /*
-          Supabase Authentication
-        */
+        try {
 
-        const {
-          data,
-          error: loginError
-        } =
-          await supabaseClient.auth.signInWithPassword({
+          /* =================================================
+             SUPABASE LOGIN
+             ================================================= */
 
-            email: email,
+          const {
+            data,
+            error: loginError
+          } =
+            await supabaseClient.auth.signInWithPassword({
 
-            password: password
+              email: email,
 
-          });
+              password: password
 
-
-        /*
-          Stop loading
-        */
-
-        loginButton.disabled = false;
-
-        loadingMessage.style.display =
-          "none";
+            });
 
 
-        /*
-          Login failed
-        */
+          /* Stop loading */
 
-        if (loginError) {
+          loginButton.disabled = false;
+
+          loadingMessage.style.display =
+            "none";
+
+
+          /* =================================================
+             LOGIN ERROR
+             ================================================= */
+
+          if (loginError) {
+
+            console.error(
+              "Supabase Login Error:",
+              loginError
+            );
+
+            errorMessage.textContent =
+              "Email या Password गलत है।";
+
+            errorMessage.style.display =
+              "block";
+
+            return;
+          }
+
+
+          /* =================================================
+             LOGIN SUCCESS
+             ================================================= */
+
+          if (data && data.user) {
+
+            successMessage.textContent =
+              "Login सफल! Dashboard खोला जा रहा है...";
+
+            successMessage.style.display =
+              "block";
+
+
+            /* Open Admin Dashboard */
+
+            setTimeout(function() {
+
+              window.location.href =
+                "admin-dashboard.html";
+
+            }, 700);
+
+          } else {
+
+            errorMessage.textContent =
+              "Login सफल नहीं हुआ। कृपया फिर से कोशिश करें।";
+
+            errorMessage.style.display =
+              "block";
+          }
+
+        } catch (error) {
+
+          /* =================================================
+             UNEXPECTED ERROR
+             ================================================= */
 
           console.error(
-            "Login Error:",
-            loginError
+            "Unexpected Login Error:",
+            error
           );
 
+
+          loginButton.disabled = false;
+
+          loadingMessage.style.display =
+            "none";
+
+
           errorMessage.textContent =
-            "Email या Password गलत है।";
+            "Login में समस्या आई। कृपया दोबारा कोशिश करें।";
 
           errorMessage.style.display =
             "block";
-
-          return;
-        }
-
-
-        /*
-          Login successful
-        */
-
-        if (data && data.user) {
-
-          successMessage.style.display =
-            "block";
-
-
-          /*
-            Save a simple session flag.
-            Supabase itself also maintains the
-            authenticated session.
-          */
-
-          sessionStorage.setItem(
-            "irceAdminLoggedIn",
-            "true"
-          );
-
-
-          /*
-            Open dashboard
-          */
-
-          setTimeout(function() {
-
-            window.location.href =
-              "admin-dashboard.html";
-
-          }, 500);
-
         }
 
       }
-
     );
 
   </script>
