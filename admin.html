@@ -115,6 +115,20 @@
       transform: none;
     }
 
+    .forgot-password {
+      display: block;
+      text-align: right;
+      margin-top: 10px;
+      color: #075f5b;
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
     .loading {
       display: none;
       margin-top: 12px;
@@ -195,6 +209,7 @@
         IRCE Coaching Administration Panel
       </p>
 
+      <!-- LOGIN FORM -->
       <form id="loginForm">
 
         <!-- ADMIN EMAIL -->
@@ -231,6 +246,15 @@
             autocomplete="current-password"
             required
           >
+
+          <!-- FORGOT PASSWORD -->
+          <a
+            href="#"
+            class="forgot-password"
+            id="forgotPassword"
+          >
+            Password भूल गए?
+          </a>
 
         </div>
 
@@ -309,14 +333,8 @@
 
 
     /*
-       अभी Publishable Key नहीं डालनी है।
-
-       बाद में यहाँ अपनी Supabase Publishable Key डालना:
-
-       const SUPABASE_KEY = "sb_publishable_xxxxxxxxx";
-
-       IMPORTANT:
-       यहाँ Secret Key या service_role key बिल्कुल नहीं डालनी।
+      यह Publishable Key है।
+      Secret / service_role key यहाँ कभी नहीं डालनी है।
     */
 
     const SUPABASE_KEY =
@@ -350,6 +368,9 @@
     const loginButton =
       document.getElementById("loginButton");
 
+    const forgotPassword =
+      document.getElementById("forgotPassword");
+
     const loadingMessage =
       document.getElementById("loadingMessage");
 
@@ -358,6 +379,39 @@
 
     const successMessage =
       document.getElementById("successMessage");
+
+
+    /* =====================================================
+       HELPER FUNCTIONS
+       ===================================================== */
+
+    function showError(message) {
+
+      successMessage.style.display = "none";
+
+      errorMessage.textContent = message;
+
+      errorMessage.style.display = "block";
+    }
+
+
+    function showSuccess(message) {
+
+      errorMessage.style.display = "none";
+
+      successMessage.textContent = message;
+
+      successMessage.style.display = "block";
+    }
+
+
+    function clearMessages() {
+
+      errorMessage.style.display = "none";
+
+      successMessage.style.display = "none";
+
+    }
 
 
     /* =====================================================
@@ -370,15 +424,8 @@
 
         event.preventDefault();
 
+        clearMessages();
 
-        /* Hide old messages */
-
-        errorMessage.style.display = "none";
-
-        successMessage.style.display = "none";
-
-
-        /* Get email and password */
 
         const email =
           emailInput.value.trim();
@@ -387,23 +434,24 @@
           passwordInput.value;
 
 
-        /* Check empty fields */
+        /* CHECK EMPTY FIELDS */
 
         if (!email || !password) {
 
-          errorMessage.textContent =
-            "Email और Password दोनों भरें।";
-
-          errorMessage.style.display =
-            "block";
+          showError(
+            "Email और Password दोनों भरें।"
+          );
 
           return;
         }
 
 
-        /* Start loading */
+        /* START LOADING */
 
         loginButton.disabled = true;
+
+        loginButton.textContent =
+          "Login हो रहा है...";
 
         loadingMessage.style.display =
           "block";
@@ -428,17 +476,18 @@
             });
 
 
-          /* Stop loading */
+          /* STOP LOADING */
 
           loginButton.disabled = false;
+
+          loginButton.textContent =
+            "Login करें →";
 
           loadingMessage.style.display =
             "none";
 
 
-          /* =================================================
-             LOGIN ERROR
-             ================================================= */
+          /* LOGIN ERROR */
 
           if (loginError) {
 
@@ -447,30 +496,24 @@
               loginError
             );
 
-            errorMessage.textContent =
-              "Email या Password गलत है।";
-
-            errorMessage.style.display =
-              "block";
+            showError(
+              "Email या Password गलत है।"
+            );
 
             return;
           }
 
 
-          /* =================================================
-             LOGIN SUCCESS
-             ================================================= */
+          /* LOGIN SUCCESS */
 
           if (data && data.user) {
 
-            successMessage.textContent =
-              "Login सफल! Dashboard खोला जा रहा है...";
-
-            successMessage.style.display =
-              "block";
+            showSuccess(
+              "Login सफल! Dashboard खोला जा रहा है..."
+            );
 
 
-            /* Open Admin Dashboard */
+            /* OPEN DASHBOARD */
 
             setTimeout(function() {
 
@@ -481,18 +524,14 @@
 
           } else {
 
-            errorMessage.textContent =
-              "Login सफल नहीं हुआ। कृपया फिर से कोशिश करें।";
+            showError(
+              "Login सफल नहीं हुआ। कृपया फिर से कोशिश करें।"
+            );
 
-            errorMessage.style.display =
-              "block";
           }
 
-        } catch (error) {
 
-          /* =================================================
-             UNEXPECTED ERROR
-             ================================================= */
+        } catch (error) {
 
           console.error(
             "Unexpected Login Error:",
@@ -502,15 +541,152 @@
 
           loginButton.disabled = false;
 
+          loginButton.textContent =
+            "Login करें →";
+
           loadingMessage.style.display =
             "none";
 
 
-          errorMessage.textContent =
-            "Login में समस्या आई। कृपया दोबारा कोशिश करें।";
+          showError(
+            "Login में समस्या आई। कृपया दोबारा कोशिश करें।"
+          );
 
-          errorMessage.style.display =
-            "block";
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       FORGOT PASSWORD
+       ===================================================== */
+
+    forgotPassword.addEventListener(
+      "click",
+      async function(event) {
+
+        event.preventDefault();
+
+        clearMessages();
+
+
+        const email =
+          emailInput.value.trim();
+
+
+        /* EMAIL REQUIRED */
+
+        if (!email) {
+
+          showError(
+            "पहले अपना Admin Email डालें।"
+          );
+
+          emailInput.focus();
+
+          return;
+        }
+
+
+        /* VALIDATE EMAIL */
+
+        if (!email.includes("@")) {
+
+          showError(
+            "कृपया सही Email Address डालें।"
+          );
+
+          emailInput.focus();
+
+          return;
+        }
+
+
+        forgotPassword.style.pointerEvents =
+          "none";
+
+        forgotPassword.textContent =
+          "Reset Email भेजा जा रहा है...";
+
+
+        try {
+
+          /* =================================================
+             PASSWORD RECOVERY
+             ================================================= */
+
+          const { error } =
+            await supabaseClient.auth.resetPasswordForEmail(
+              email,
+              {
+                redirectTo:
+                  window.location.origin +
+                  "/irce-coaching/reset-password.html"
+              }
+            );
+
+
+          if (error) {
+
+            console.error(
+              "Password Reset Error:",
+              error
+            );
+
+
+            if (
+              error.message &&
+              error.message
+                .toLowerCase()
+                .includes("rate limit")
+            ) {
+
+              showError(
+                "बहुत बार Reset Email भेजा गया है। कुछ समय बाद फिर कोशिश करें।"
+              );
+
+            } else {
+
+              showError(
+                "Reset Email भेजने में समस्या आई: " +
+                error.message
+              );
+
+            }
+
+            return;
+          }
+
+
+          /* SUCCESS */
+
+          showSuccess(
+            "Password Reset Link आपके Email पर भेज दिया गया है। अपना Gmail Inbox/Spam folder चेक करें।"
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "Unexpected Password Reset Error:",
+            error
+          );
+
+
+          showError(
+            "Reset Email भेजने में समस्या आई। कृपया दोबारा कोशिश करें।"
+          );
+
+
+        } finally {
+
+          forgotPassword.style.pointerEvents =
+            "auto";
+
+          forgotPassword.textContent =
+            "Password भूल गए?";
+
         }
 
       }
