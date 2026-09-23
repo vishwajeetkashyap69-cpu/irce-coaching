@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block title %}IRCE Coaching | Admission{% endblock %}
+{% block content %}
+<section class="hero"><div class="wrap hero-grid"><div><div class="tag">INTER RURAL COMPETITION EXAM</div>
+<h1>गाँव के विद्यार्थियों के <span>सपनों को लक्ष्य</span> तक पहुँचाने की तैयारी।</h1>
+<p>JNV, VidyaGyan, Sainik School, CHS, NMMS और अन्य प्रतियोगी परीक्षाओं के लिए व्यवस्थित तैयारी।</p>
+<a class="btn" href="{{url_for('admission')}}">🎓 अभी Admission करें</a> <a class="btn ghost" href="#courses">Courses देखें</a></div>
+<div class="hero-card"><div class="big">IRCE</div><p>Learn • Practice • Compete • Achieve</p><div class="stats"><b>📚 नियमित कक्षाएँ</b><b>📝 टेस्ट प्रैक्टिस</b><b>🎯 Target Based Study</b></div></div></div></section>
+<section class="section" id="courses"><div class="wrap"><h2>हमारी तैयारी</h2><p class="lead">विद्यार्थियों की जरूरत के अनुसार परीक्षा-केंद्रित तैयारी।</p>
+<div class="cards">{% for c in ["JNV / Navodaya","VidyaGyan","Sainik School","CHS Entrance","NMMS","अन्य प्रतियोगी परीक्षाएँ"] %}<div class="card"><div class="icon">🎯</div><h3>{{c}}</h3><p>Concept + Practice + Test के साथ लक्ष्य आधारित तैयारी।</p></div>{% endfor %}</div></div></section>
+<section class="section alt"><div class="wrap"><div class="split"><div><h2>IRCE क्यों?</h2><ul class="ticks"><li>सरल एवं समझने योग्य अध्ययन</li><li>नियमित अभ्यास और टेस्ट</li><li>ग्रामीण विद्यार्थियों पर विशेष फोकस</li><li>समयबद्ध परीक्षा तैयारी</li><li>प्रगति पर निरंतर ध्यान</li></ul></div><div class="quote">“मेहनत को सही दिशा मिले, तो लक्ष्य दूर नहीं रहता।”<strong>— IRCE Coaching</strong></div></div></div></section>
+<section class="section"><div class="wrap"><h2>Latest Updates</h2><div class="updates">{% for u in updates %}<div class="update"><small>{{u.date or ''}}</small><h3>{{u.title}}</h3><p>{{u.description}}</p>{% if u.link %}<a href="{{u.link}}" target="_blank">Official Link →</a>{% endif %}</div>{% else %}<p>नई updates जल्द यहाँ दिखाई देंगी।</p>{% endfor %}</div></div></section>
+<section class="cta"><div class="wrap"><h2>Admission शुरू करें</h2><p>अपना registration online submit करें।</p><a class="btn" href="{{url_for('admission')}}">Apply Now →</a></div></section>
+{% endblock %}

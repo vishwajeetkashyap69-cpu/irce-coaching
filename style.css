@@ -1142,3 +1142,48 @@ h2 span {
     transition-duration: 0.01ms !important;
   }
 }
+/* Student Photo in Admin Panel */
+
+.student-photo {
+    width: 55px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #e5e9ef;
+    display: block;
+}
+
+.no-photo {
+    width: 55px;
+    height: 65px;
+    border-radius: 8px;
+    background: #f2f4f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    border: 1px solid #e5e9ef;
+}/* ================================
+   STUDENT PHOTO - ADMIN PANEL
+================================ */
+
+.student-photo {
+    width: 55px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #e5e9ef;
+    display: block;
+}
+
+.no-photo {
+    width: 55px;
+    height: 65px;
+    border-radius: 8px;
+    background: #f2f4f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    border: 1px solid #e5e9ef;
+}

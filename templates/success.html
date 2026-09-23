@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Registration Successful{% endblock %}
+{% block content %}<section class="success"><div class="successbox"><div class="check">✓</div><h1>Registration सफल!</h1><p>{{name}}, आपका आवेदन सफलतापूर्वक जमा हो गया है।</p><div class="appno">{{application_no}}</div><p>इस Application Number को सुरक्षित रखें।</p><a class="btn" href="{{url_for('application_status',application_no=application_no)}}">Application Status</a> <a class="btn ghost" href="{{url_for('home')}}">Home</a></div></section>{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block title %}Online Admission | IRCE{% endblock %}
+{% block content %}<section class="formpage"><div class="wrap narrow"><div class="formhead"><div class="tag">ONLINE REGISTRATION</div><h1>IRCE Admission Form</h1><p>सभी जरूरी जानकारी सही-सही भरें।</p></div>
+<form method="post" enctype="multipart/form-data" class="form">
+<div class="formsection"><h3>1. विद्यार्थी की जानकारी</h3><div class="grid2">
+<label>विद्यार्थी का नाम *<input name="name" required></label><label>पिता का नाम<input name="father"></label>
+<label>माता का नाम<input name="mother"></label><label>जन्मतिथि<input type="date" name="dob"></label>
+<label>लिंग<select name="gender"><option value="">चुनें</option><option>Male</option><option>Female</option><option>Other</option></select></label>
+<label>कक्षा<select name="class_name"><option value="">चुनें</option>{% for x in ["5","6","7","8","9","10","11","12","अन्य"] %}<option>{{x}}</option>{% endfor %}</select></label>
+</div></div>
+<div class="formsection"><h3>2. संपर्क एवं पता</h3><div class="grid2"><label>मोबाइल नंबर *<input name="mobile" pattern="[0-9]{10}" required></label><label>WhatsApp नंबर<input name="whatsapp"></label><label>स्कूल का नाम<input name="school"></label><label>गाँव<input name="village"></label><label>जिला<input name="district" value="Chandauli"></label><label>परीक्षा / Course<select name="course"><option>JNV / Navodaya</option><option>VidyaGyan</option><option>Sainik School</option><option>CHS Entrance</option><option>NMMS</option><option>अन्य</option></select></label></div><label>पूरा पता<textarea name="address" rows="3"></textarea></label></div>
+<div class="formsection"><h3>3. Photo</h3><label>विद्यार्थी की फोटो<input type="file" name="photo" accept=".jpg,.jpeg,.png,.webp"></label></div>
+<label class="agree"><input type="checkbox" required> मैंने दी गई जानकारी सही होने की पुष्टि की है।</label>
+<button class="btn full" type="submit">Submit Application</button></form></div></section>{% endblock %}

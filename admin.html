@@ -1,698 +1,100 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="panel">
+    <h2>Applications</h2>
 
-  <title>IRCE Coaching — Admin Login</title>
+    <div class="tablewrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Application</th>
+                    <th>Student</th>
+                    <th>Mobile</th>
+                    <th>Class</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+            <tbody>
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: Arial, sans-serif;
-      background: #f7f2e8;
-      color: #173f3d;
-    }
+                {% for a in applications %}
 
-    .login-wrapper {
-      width: 100%;
-      max-width: 430px;
-      padding: 20px;
-    }
+                <tr>
 
-    .login-card {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 40px 35px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-      border: 1px solid #e8dfd2;
-    }
+                    <!-- Student Photo -->
+                    <td>
+                        {% if a.photo %}
+                            <img
+                                src="{{ url_for('static', filename='uploads/' + a.photo) }}"
+                                alt="Student Photo"
+                                class="student-photo"
+                            >
+                        {% else %}
+                            <div class="no-photo">
+                                👤
+                            </div>
+                        {% endif %}
+                    </td>
 
-    .logo {
-      width: 65px;
-      height: 65px;
-      margin: 0 auto 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 18px;
-      background: #f7a415;
-      color: #075f5b;
-      font-size: 25px;
-      font-weight: 800;
-    }
+                    <!-- Application Number -->
+                    <td>
+                        <a href="{{ url_for('application_status', application_no=a.application_no) }}">
+                            {{ a.application_no }}
+                        </a>
+                    </td>
 
-    h1 {
-      text-align: center;
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
+                    <!-- Student Name -->
+                    <td>
+                        <strong>{{ a.name }}</strong>
+                    </td>
 
-    .subtitle {
-      text-align: center;
-      color: #68807d;
-      font-size: 14px;
-      margin-bottom: 30px;
-      line-height: 1.5;
-    }
+                    <!-- Mobile -->
+                    <td>{{ a.mobile }}</td>
 
-    .field {
-      margin-bottom: 18px;
-    }
+                    <!-- Class -->
+                    <td>{{ a.class_name or '-' }}</td>
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 600;
-    }
+                    <!-- Course -->
+                    <td>{{ a.course or '-' }}</td>
 
-    input {
-      width: 100%;
-      padding: 14px 15px;
-      border: 1px solid #d9d2c8;
-      border-radius: 12px;
-      font-size: 15px;
-      outline: none;
-      transition: 0.2s;
-    }
+                    <!-- Date -->
+                    <td>{{ a.created_at }}</td>
 
-    input:focus {
-      border-color: #075f5b;
-      box-shadow: 0 0 0 3px rgba(7, 95, 91, 0.1);
-    }
+                    <!-- Status -->
+                    <td>
+                        <form
+                            method="post"
+                            action="{{ url_for('status', app_id=a.id) }}"
+                        >
 
-    button {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 15px;
-      background: #f7a415;
-      color: #173f3d;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: 0.2s;
-    }
+                            <select
+                                name="status"
+                                onchange="this.form.submit()"
+                            >
 
-    button:hover {
-      transform: translateY(-1px);
-    }
+                                {% for s in ['New','Contacted','Selected','Rejected'] %}
 
-    button:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
-    }
+                                <option
+                                    {% if a.status == s %}
+                                    selected
+                                    {% endif %}
+                                >
+                                    {{ s }}
+                                </option>
 
-    .forgot-password {
-      display: block;
-      text-align: right;
-      margin-top: 10px;
-      color: #075f5b;
-      text-decoration: none;
-      font-size: 13px;
-      cursor: pointer;
-    }
+                                {% endfor %}
 
-    .forgot-password:hover {
-      text-decoration: underline;
-    }
+                            </select>
 
-    .loading {
-      display: none;
-      margin-top: 12px;
-      text-align: center;
-      color: #68807d;
-      font-size: 13px;
-    }
+                        </form>
+                    </td>
 
-    .error {
-      display: none;
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      background: #fff0ed;
-      color: #c7472f;
-      font-size: 14px;
-      text-align: center;
-      line-height: 1.5;
-    }
+                </tr>
 
-    .success {
-      display: none;
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      background: #eaf7f2;
-      color: #075f5b;
-      font-size: 14px;
-      text-align: center;
-      line-height: 1.5;
-    }
+                {% endfor %}
 
-    .back {
-      display: block;
-      text-align: center;
-      margin-top: 22px;
-      color: #075f5b;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .back:hover {
-      text-decoration: underline;
-    }
-
-    .brand {
-      text-align: center;
-      margin-top: 25px;
-      font-size: 12px;
-      color: #68807d;
-    }
-
-    @media (max-width: 480px) {
-      .login-card {
-        padding: 32px 22px;
-      }
-
-      h1 {
-        font-size: 25px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="login-wrapper">
-
-    <div class="login-card">
-
-      <div class="logo">
-        IR
-      </div>
-
-      <h1>Admin Login</h1>
-
-      <p class="subtitle">
-        IRCE Coaching Administration Panel
-      </p>
-
-      <!-- LOGIN FORM -->
-      <form id="loginForm">
-
-        <!-- ADMIN EMAIL -->
-        <div class="field">
-
-          <label for="email">
-            Admin Email
-          </label>
-
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="अपना Admin Email डालें"
-            autocomplete="username"
-            required
-          >
-
-        </div>
-
-
-        <!-- PASSWORD -->
-        <div class="field">
-
-          <label for="password">
-            Password
-          </label>
-
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="अपना Password डालें"
-            autocomplete="current-password"
-            required
-          >
-
-          <!-- FORGOT PASSWORD -->
-          <a
-            href="#"
-            class="forgot-password"
-            id="forgotPassword"
-          >
-            Password भूल गए?
-          </a>
-
-        </div>
-
-
-        <!-- LOGIN BUTTON -->
-        <button
-          type="submit"
-          id="loginButton"
-        >
-          Login करें →
-        </button>
-
-
-        <!-- LOADING -->
-        <div
-          class="loading"
-          id="loadingMessage"
-        >
-          Login हो रहा है...
-        </div>
-
-
-        <!-- ERROR -->
-        <div
-          class="error"
-          id="errorMessage"
-        >
-          Email या Password गलत है।
-        </div>
-
-
-        <!-- SUCCESS -->
-        <div
-          class="success"
-          id="successMessage"
-        >
-          Login सफल! Dashboard खोला जा रहा है...
-        </div>
-
-      </form>
-
-
-      <!-- BACK TO WEBSITE -->
-      <a
-        href="index.html"
-        class="back"
-      >
-        ← मुख्य वेबसाइट पर वापस जाएँ
-      </a>
-
+            </tbody>
+        </table>
     </div>
-
-
-    <div class="brand">
-      © 2026 IRCE Coaching
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       SUPABASE LIBRARY
-       ===================================================== -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-  <script>
-
-    /* =====================================================
-       SUPABASE CONFIGURATION
-       ===================================================== */
-
-    const SUPABASE_URL =
-      "https://lvygpsvtzjywcyjnyumx.supabase.co";
-
-
-    /*
-      यह Publishable Key है।
-      Secret / service_role key यहाँ कभी नहीं डालनी है।
-    */
-
-    const SUPABASE_KEY =
-      "sb_publishable_-Un7Fq_wevB_CPEj6E_TZg_lX9yRE7L";
-
-
-    /* =====================================================
-       CREATE SUPABASE CLIENT
-       ===================================================== */
-
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
-
-
-    /* =====================================================
-       GET HTML ELEMENTS
-       ===================================================== */
-
-    const loginForm =
-      document.getElementById("loginForm");
-
-    const emailInput =
-      document.getElementById("email");
-
-    const passwordInput =
-      document.getElementById("password");
-
-    const loginButton =
-      document.getElementById("loginButton");
-
-    const forgotPassword =
-      document.getElementById("forgotPassword");
-
-    const loadingMessage =
-      document.getElementById("loadingMessage");
-
-    const errorMessage =
-      document.getElementById("errorMessage");
-
-    const successMessage =
-      document.getElementById("successMessage");
-
-
-    /* =====================================================
-       HELPER FUNCTIONS
-       ===================================================== */
-
-    function showError(message) {
-
-      successMessage.style.display = "none";
-
-      errorMessage.textContent = message;
-
-      errorMessage.style.display = "block";
-    }
-
-
-    function showSuccess(message) {
-
-      errorMessage.style.display = "none";
-
-      successMessage.textContent = message;
-
-      successMessage.style.display = "block";
-    }
-
-
-    function clearMessages() {
-
-      errorMessage.style.display = "none";
-
-      successMessage.style.display = "none";
-
-    }
-
-
-    /* =====================================================
-       LOGIN FUNCTION
-       ===================================================== */
-
-    loginForm.addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-        clearMessages();
-
-
-        const email =
-          emailInput.value.trim();
-
-        const password =
-          passwordInput.value;
-
-
-        /* CHECK EMPTY FIELDS */
-
-        if (!email || !password) {
-
-          showError(
-            "Email और Password दोनों भरें।"
-          );
-
-          return;
-        }
-
-
-        /* START LOADING */
-
-        loginButton.disabled = true;
-
-        loginButton.textContent =
-          "Login हो रहा है...";
-
-        loadingMessage.style.display =
-          "block";
-
-
-        try {
-
-          /* =================================================
-             SUPABASE LOGIN
-             ================================================= */
-
-          const {
-            data,
-            error: loginError
-          } =
-            await supabaseClient.auth.signInWithPassword({
-
-              email: email,
-
-              password: password
-
-            });
-
-
-          /* STOP LOADING */
-
-          loginButton.disabled = false;
-
-          loginButton.textContent =
-            "Login करें →";
-
-          loadingMessage.style.display =
-            "none";
-
-
-          /* LOGIN ERROR */
-
-          if (loginError) {
-
-            console.error(
-              "Supabase Login Error:",
-              loginError
-            );
-
-            showError(
-              "Email या Password गलत है।"
-            );
-
-            return;
-          }
-
-
-          /* LOGIN SUCCESS */
-
-          if (data && data.user) {
-
-            showSuccess(
-              "Login सफल! Dashboard खोला जा रहा है..."
-            );
-
-
-            /* OPEN DASHBOARD */
-
-            setTimeout(function() {
-
-              window.location.href =
-                "admin-dashboard.html";
-
-            }, 700);
-
-          } else {
-
-            showError(
-              "Login सफल नहीं हुआ। कृपया फिर से कोशिश करें।"
-            );
-
-          }
-
-
-        } catch (error) {
-
-          console.error(
-            "Unexpected Login Error:",
-            error
-          );
-
-
-          loginButton.disabled = false;
-
-          loginButton.textContent =
-            "Login करें →";
-
-          loadingMessage.style.display =
-            "none";
-
-
-          showError(
-            "Login में समस्या आई। कृपया दोबारा कोशिश करें।"
-          );
-
-        }
-
-      }
-    );
-
-
-    /* =====================================================
-       FORGOT PASSWORD
-       ===================================================== */
-
-    forgotPassword.addEventListener(
-      "click",
-      async function(event) {
-
-        event.preventDefault();
-
-        clearMessages();
-
-
-        const email =
-          emailInput.value.trim();
-
-
-        /* EMAIL REQUIRED */
-
-        if (!email) {
-
-          showError(
-            "पहले अपना Admin Email डालें।"
-          );
-
-          emailInput.focus();
-
-          return;
-        }
-
-
-        /* VALIDATE EMAIL */
-
-        if (!email.includes("@")) {
-
-          showError(
-            "कृपया सही Email Address डालें।"
-          );
-
-          emailInput.focus();
-
-          return;
-        }
-
-
-        forgotPassword.style.pointerEvents =
-          "none";
-
-        forgotPassword.textContent =
-          "Reset Email भेजा जा रहा है...";
-
-
-        try {
-
-          /* =================================================
-             PASSWORD RECOVERY
-             ================================================= */
-
-          const { error } =
-            await supabaseClient.auth.resetPasswordForEmail(
-              email,
-              {
-                redirectTo:
-                  window.location.origin +
-                  "/irce-coaching/reset-password.html"
-              }
-            );
-
-
-          if (error) {
-
-            console.error(
-              "Password Reset Error:",
-              error
-            );
-
-
-            if (
-              error.message &&
-              error.message
-                .toLowerCase()
-                .includes("rate limit")
-            ) {
-
-              showError(
-                "बहुत बार Reset Email भेजा गया है। कुछ समय बाद फिर कोशिश करें।"
-              );
-
-            } else {
-
-              showError(
-                "Reset Email भेजने में समस्या आई: " +
-                error.message
-              );
-
-            }
-
-            return;
-          }
-
-
-          /* SUCCESS */
-
-          showSuccess(
-            "Password Reset Link आपके Email पर भेज दिया गया है। अपना Gmail Inbox/Spam folder चेक करें।"
-          );
-
-
-        } catch (error) {
-
-          console.error(
-            "Unexpected Password Reset Error:",
-            error
-          );
-
-
-          showError(
-            "Reset Email भेजने में समस्या आई। कृपया दोबारा कोशिश करें।"
-          );
-
-
-        } finally {
-
-          forgotPassword.style.pointerEvents =
-            "auto";
-
-          forgotPassword.textContent =
-            "Password भूल गए?";
-
-        }
-
-      }
-    );
-
-  </script>
-
-</body>
-</html>
+</div>
